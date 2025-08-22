@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<!--
+    Hi-Tech Internet Hotspot Portal - Speed Test
+    Copyright (c) 2025 Mahmoud. All rights reserved.
+    
+    Developed by: Mahmoud
+    Website: Hi-Tech Internet Services
+    Description: Internet speed testing with Fast.com Netflix API integration
+    
+    This software is proprietary and confidential.
+    Unauthorized copying, distribution, or modification is strictly prohibited.
+-->
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار السرعة - هاي تك</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="اختبار سرعة الإنترنت بدقة عالية - هاي تك">
+    <meta name="theme-color" content="#22C55E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="هاي تك">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/arabic.css">
+<!--     <link rel="stylesheet" href="css/dynamic-themes.css">
+ --></head>
+<body>
+    <!-- Animated Background -->
+    <div class="particles" id="particles"></div>
+    <div class="bg-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+    </div>
+
+    <!-- Speed Test Container -->
+    <div class="speed-test-container">
+        <div class="speed-test-card">
+            <!-- Header Section -->
+            <div class="speed-test-header">
+                <div class="logo">
+                    <span class="logo-text">Hi-Tech</span>
+                </div>
+                <h1>اختبار سرعة الإنترنت</h1>
+                <p class="subtitle">قس سرعة اتصالك بدقة وموثوقية</p>
+                
+                <!-- Back Button -->
+                <button class="back-btn" onclick="window.location.href='login.html'">
+                    ← العودة للصفحة الرئيسية
+                </button>
+            </div>
+
+            <!-- Speed Simulator -->
+            <div class="speed-simulator">
+                <div class="speed-header">
+                    <h3>اختبار السرعة المباشر</h3>
+                    <p class="real-data-notice">يستخدم Fast.com Netflix API للحصول على بيانات حقيقية ودقيقة</p>
+                    <button class="speed-test-btn" onclick="startSpeedTest()">بدء الاختبار</button>
+                </div>
+                
+                <div class="speed-gauges">
+                    <!-- Download Speed Gauge -->
+                    <div class="speed-gauge">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 200 120">
+                                <defs>
+                                    <linearGradient id="downloadGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#10B981"/>
+                                        <stop offset="100%" style="stop-color:#22C55E"/>
+                                    </linearGradient>
+                                </defs>
+                                <path class="gauge-bg" d="M 20 100 A 80 80 0 0 1 180 100"></path>
+                                <path class="gauge-fill download-gauge" d="M 20 100 A 80 80 0 0 1 180 100" stroke-dasharray="0 251.2"></path>
+                                <text class="gauge-label" x="100" y="90">تحميل</text>
+                            </svg>
+                            <div class="speed-value">
+                                <span class="speed-number" id="downloadSpeed">0</span>
+                                <span class="speed-unit">ميجا/ث</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Speed Gauge -->
+                    <div class="speed-gauge">
+                        <div class="gauge-container">
+                            <svg class="gauge-svg" viewBox="0 0 200 120">
+                                <defs>
+                                    <linearGradient id="uploadGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#3B82F6"/>
+                                        <stop offset="100%" style="stop-color:#6366F1"/>
+                                    </linearGradient>
+                                </defs>
+                                <path class="gauge-bg" d="M 20 100 A 80 80 0 0 1 180 100"></path>
+                                <path class="gauge-fill upload-gauge" d="M 20 100 A 80 80 0 0 1 180 100" stroke-dasharray="0 251.2"></path>
+                                <text class="gauge-label" x="100" y="90">رفع</text>
+                            </svg>
+                            <div class="speed-value">
+                                <span class="speed-number" id="uploadSpeed">0</span>
+                                <span class="speed-unit">ميجا/ث</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Connection Status -->
+                <div class="connection-status">
+                    <div class="status-item">
+                        <span class="status-label">حالة الاتصال:</span>
+                        <div class="status-indicator">
+                            <div class="status-dot" id="statusDot"></div>
+                            <span class="status-text" id="statusText">جاهز للاختبار</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-item">
+                        <span class="status-label">زمن الاستجابة:</span>
+                        <span class="ping-value" id="pingValue">-- مللي ثانية</span>
+                    </div>
+                </div>
+                
+                <!-- Progress Bars -->
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <label>تحميل البيانات</label>
+                        <div class="progress-bar">
+                            <div class="progress-fill download-progress" id="downloadProgress"></div>
+                        </div>
+                        <span class="progress-percent" id="downloadPercent">0%</span>
+                    </div>
+                    
+                    <div class="progress-item">
+                        <label>رفع البيانات</label>
+                        <div class="progress-bar">
+                            <div class="progress-fill upload-progress" id="uploadProgress"></div>
+                        </div>
+                        <span class="progress-percent" id="uploadPercent">0%</span>
+                    </div>
+                </div>
+
+                <!-- Speed Test Results -->
+                <div class="speed-results" id="speedResults" style="display: none;">
+                    <h4>نتائج الاختبار</h4>
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <span class="result-label">سرعة التحميل:</span>
+                            <span class="result-value" id="finalDownloadSpeed">-- ميجا/ث</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">سرعة الرفع:</span>
+                            <span class="result-value" id="finalUploadSpeed">-- ميجا/ث</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">زمن الاستجابة:</span>
+                            <span class="result-value" id="finalPing">-- مللي ثانية</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">جودة الاتصال:</span>
+                            <span class="result-value" id="connectionQuality">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="speed-tips">
+                <h4>نصائح لتحسين السرعة</h4>
+                <ul>
+                    <li>تأكد من إغلاق التطبيقات غير الضرورية</li>
+                    <li>اقترب من جهاز التوجيه للحصول على إشارة أقوى</li>
+                    <li>تجنب استخدام الشبكة من أجهزة متعددة أثناء الاختبار</li>
+                    <li>أعد تشغيل جهاز التوجيه إذا كانت السرعة منخفضة</li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                📞 <span class="support-label">الدعم الفني 24/7:</span> <span class="phone">0599328821</span> | 📧 <span class="email">support@hitech.net</span><br>
+                📍 <span class="location">معن</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/speed-test.js"></script>
+    <script src="js/pwa-manager.js"></script>
+<!--     <script src="js/dynamic-themes.js"></script>
+ --></body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هاي تك - وداعاً!</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/logout.css">
+    <link rel="stylesheet" href="css/arabic.css">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="bg-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="goodbye-message">
+                <div class="logo">
+                    <span class="logo-text">HT</span>
+                </div>
+                <h1>شكراً لاستخدامك هاي تك!</h1>
+                <p class="tagline">نأمل أن تكون قد استمتعت بتجربة التصفح</p>
+            </div>
+
+            <div class="session-summary">
+                <h3 style="color: var(--primary-green); margin-bottom: 16px;">ملخص الجلسة</h3>
+                <div class="summary-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">$(uptime)</div>
+                        <div class="stat-label">إجمالي الوقت</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$(bytes-in-nice)</div>
+                        <div class="stat-label">البيانات المحملة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$(bytes-out-nice)</div>
+                        <div class="stat-label">البيانات المرسلة</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="$(link-login)" class="reconnect-btn">اتصل مرة أخرى</a>
+            </div>
+
+            <div class="contact-info">
+                <p>تحتاج مساعدة؟ اتصل بنا في أي وقت!</p>
+                📞 +970 599 328 821 | 📧 support@hitech.net
+            </div>
+        </div>
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

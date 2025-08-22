@@ -1,0 +1,173 @@
+/**
+ * Hi-Tech Internet Hotspot Portal - Arabic Language Support
+ * Copyright (c) 2025 Mahmoud. All rights reserved.
+ * 
+ * Developed by: Mahmoud
+ * Website: Hi-Tech Internet Services
+ * Description: Arabic RTL layout and typography styles
+ * 
+ * This software is proprietary and confidential.
+ * Unauthorized copying, distribution, or modification is strictly prohibited.
+ */
+
+/* ========================================
+   RTL LAYOUT ADJUSTMENTS
+   ======================================== */
+
+/* Global RTL adjustments */
+[dir="rtl"] {
+    text-align: right;
+}
+
+/* HTML direction for Arabic */
+html[dir="rtl"] {
+    direction: rtl;
+}
+
+/* Arabic Typography */
+[dir="rtl"] body {
+    font-family: 'Tajawal', 'Cairo', 'Amiri', 'Noto Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Headers in Arabic */
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+    font-family: 'Cairo', 'Tajawal', 'Amiri', 'Noto Sans Arabic', sans-serif;
+    font-weight: 700;
+}
+
+/* Input Fields RTL */
+[dir="rtl"] input[type="text"],
+[dir="rtl"] input[type="password"] {
+    text-align: right;
+    padding: 14px 48px 14px 16px;
+    direction: rtl;
+}
+
+[dir="rtl"] .input-icon {
+    left: auto;
+    right: 16px;
+}
+
+/* Form Labels */
+[dir="rtl"] .form-label {
+    text-align: right;
+    font-weight: 600;
+}
+
+/* Package Cards RTL */
+[dir="rtl"] .package-grid {
+    direction: rtl;
+}
+
+[dir="rtl"] .package-card {
+    text-align: center;
+}
+
+/* Footer Links RTL */
+[dir="rtl"] .footer-links {
+    direction: rtl;
+}
+
+[dir="rtl"] .footer-links a {
+    margin: 0 6px;
+}
+
+/* Contact Info RTL */
+[dir="rtl"] .contact-info {
+    direction: rtl;
+    text-align: center;
+}
+
+/* Keep phone numbers and emails left-to-right */
+[dir="rtl"] .contact-info .phone,
+[dir="rtl"] .contact-info .email {
+    direction: ltr;
+    unicode-bidi: embed;
+    display: inline;
+}
+
+/* User Info Section RTL */
+[dir="rtl"] .user-info {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .user-avatar {
+    margin-right: 0;
+    margin-left: 16px;
+}
+
+
+/* ========================================
+   ARABIC FONT IMPROVEMENTS
+   ======================================== */
+
+/* Better Arabic font rendering */
+[dir="rtl"] * {
+    font-feature-settings: "liga" 1, "kern" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Arabic number formatting */
+[dir="rtl"] .package-speed,
+[dir="rtl"] .package-price,
+[dir="rtl"] .stat-value {
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: embed;
+}
+
+/* Maintain LTR for technical terms */
+[dir="rtl"] .technical-term {
+    direction: ltr;
+    unicode-bidi: embed;
+    display: inline-block;
+}
+
+/* ========================================
+   RESPONSIVE RTL ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 480px) {
+    [dir="rtl"] .footer-links {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    [dir="rtl"] .footer-links a {
+        margin: 4px 0;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+
+/* Improve contrast for Arabic text */
+[dir="rtl"] .welcome-message p,
+[dir="rtl"] .contact-info {
+    color: #F0F9FF;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Better focus indicators for RTL */
+[dir="rtl"] input:focus {
+    box-shadow: 0 0 0 3px var(--shadow-green);
+    outline: none;
+}
+
+/* Loading states for Arabic */
+[dir="rtl"] .connecting-card h2 {
+    line-height: 1.4;
+}
+
+/* Error messages RTL */
+[dir="rtl"] .error-message {
+    text-align: right;
+    direction: rtl;
+}
+

@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<!--
+    Hi-Tech Internet Hotspot Portal
+    Copyright (c) 2025 Mahmoud. All rights reserved.
+    
+    Developed by: Mahmoud
+    Website: Hi-Tech Internet Services
+    Description: Modern hotspot login portal with PWA capabilities
+    
+    This software is proprietary and confidential.
+    Unauthorized copying, distribution, or modification is strictly prohibited.
+-->
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هاي تك - بوابة الإنترنت المتميزة</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="بوابة الإنترنت المتميزة - هاي تك للإنترنت السريع والموثوق">
+    <meta name="theme-color" content="#22C55E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="هاي تك">
+    <meta name="application-name" content="هاي تك للإنترنت">
+    <meta name="msapplication-TileColor" content="#22C55E">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#22C55E">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/arabic.css">
+<!--     <link rel="stylesheet" href="css/dynamic-themes.css">
+ --></head>
+<body>
+    <!-- Animated Background -->
+    <div class="particles" id="particles"></div>
+    <div class="bg-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Logo Section -->
+            <div class="logo-section">
+                <div class="logo">
+                    <span class="logo-text">Hi-Tech</span>
+                </div>
+                <h1>هاي تك للإنترنت</h1>
+                <p class="tagline">سريع  • موثوق • آمن</p>
+            </div>
+
+            <!-- Date/Time Display -->
+            <div class="datetime-display">
+                <div class="current-time" id="currentTime">--:--</div>
+                <div class="current-date" id="currentDate">-- ----</div>
+            </div>
+
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <p> مرحباً بك في هاي تك! استمتع بسرعات إنترنت فائقة وموثوقية لا مثيل لها مع خدمات شبكة هاي تك المتميزة.</p>
+            </div>
+
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage">
+                $(if error)<span>$(error)</span>$(endif)
+            </div>
+
+            <!-- Login Form -->
+            <form name="login" action="$(link-login-only)" method="post" onsubmit="return doLogin()">
+                <input type="hidden" name="dst" value="$(link-orig)">
+                <input type="hidden" name="popup" value="true">
+                
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label class="form-label">اسم المستخدم</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input type="text" name="username" placeholder="أدخل اسم المستخدم" required>
+                    </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label class="form-label">كلمة المرور</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" name="password" placeholder="أدخل كلمة المرور" required>
+                    </div>
+                </div>
+
+                <!-- اختيار الباقة -->
+              <!--   <div class="package-selection">
+                    <label class="form-label">اختر باقتك</label>
+                    <div class="package-grid">
+                        <div class="package-card selected" onclick="selectPackage(this)">
+                            <div class="package-name">أساسي</div>
+                            <div class="package-speed">السرعة: 10 ميجا</div>
+                            <div class="package-price">السعر: 2 شيكل</div>
+                            <div class="package-time">16 ساعة</div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+ -->
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">دخول</button>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="footer-links">
+                <a href="javascript:void(0)" onclick="showForgotPassword()">نسيت كلمة المرور؟</a>
+                <a href="javascript:void(0)" onclick="showHelpCenter()">مركز المساعدة</a>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                📞 <span class="support-label">الدعم الفني 24/7:</span> <span class="phone">0599328821</span> | 📧 <span class="email">support@hitech.net</span><br>
+                📍 <span class="location">معن</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/md5.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/enhanced-notifications.js"></script>
+    <script src="js/pwa-manager.js"></script>
+<!--     <script src="js/dynamic-themes.js"></script>
+ --></body>
+</html>

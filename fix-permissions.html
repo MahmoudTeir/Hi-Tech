@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إصلاح أذونات الإشعارات - هاي تك</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 30%, #22C55E 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #22C55E, #16A34A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .status.denied {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .status.granted {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status.default {
+            background: rgba(251, 191, 36, 0.2);
+            color: #FCD34D;
+            border: 2px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .fix-button {
+            background: linear-gradient(135deg, #22C55E, #16A34A);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .fix-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 48px rgba(34, 197, 94, 0.4);
+        }
+
+        .fix-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon" id="statusIcon">🔔</div>
+        <h1 class="title">إصلاح أذونات الإشعارات</h1>
+        
+        <div id="permissionStatus" class="status">
+            جاري فحص حالة الأذونات...
+        </div>
+
+        <div id="actionButtons" style="display: none;">
+            <button class="fix-button" onclick="requestPermission()">
+                🔓 طلب إذن الإشعارات
+            </button>
+            
+            <button class="fix-button" onclick="testNotification()">
+                🧪 اختبار الإشعار
+            </button>
+            
+            <button class="fix-button" onclick="window.location.reload()">
+                🔄 تحديث الصفحة
+            </button>
+        </div>
+
+        <div class="instructions">
+            <h3>إذا لم تعمل الطريقة التلقائية، اتبع هذه الخطوات:</h3>
+            
+            <div class="step">
+                <strong>الخطوة 1:</strong> انقر على أيقونة القفل 🔒 في شريط العناوين (يسار الرابط)
+            </div>
+            
+            <div class="step">
+                <strong>الخطوة 2:</strong> ابحث عن "الإشعارات" أو "Notifications"
+            </div>
+            
+            <div class="step">
+                <strong>الخطوة 3:</strong> غيّر الإعداد من "حظر" إلى "السماح"
+            </div>
+            
+            <div class="step">
+                <strong>الخطوة 4:</strong> أعد تحميل الصفحة
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; font-size: 14px; opacity: 0.8;">
+            <p>💡 <strong>نصيحة:</strong> إذا كنت تستخدم متصفح مختلف، ابحث عن "إعدادات الموقع" أو "Site Settings"</p>
+        </div>
+    </div>
+
+    <script>
+        // Check permission status on load
+        window.onload = function() {
+            checkPermissionStatus();
+        };
+
+        function checkPermissionStatus() {
+            const statusDiv = document.getElementById('permissionStatus');
+            const iconDiv = document.getElementById('statusIcon');
+            const buttonsDiv = document.getElementById('actionButtons');
+
+            if (!('Notification' in window)) {
+                statusDiv.className = 'status denied';
+                statusDiv.innerHTML = '❌ الإشعارات غير مدعومة في هذا المتصفح';
+                iconDiv.textContent = '❌';
+                return;
+            }
+
+            const permission = Notification.permission;
+            
+            switch (permission) {
+                case 'granted':
+                    statusDiv.className = 'status granted';
+                    statusDiv.innerHTML = '✅ تم منح إذن الإشعارات بنجاح!<br>يمكنك الآن استخدام الإشعارات';
+                    iconDiv.textContent = '✅';
+                    buttonsDiv.style.display = 'block';
+                    break;
+                    
+                case 'denied':
+                    statusDiv.className = 'status denied';
+                    statusDiv.innerHTML = '❌ تم رفض إذن الإشعارات<br>يرجى تفعيله يدوياً من إعدادات المتصفح';
+                    iconDiv.textContent = '🚫';
+                    buttonsDiv.style.display = 'block';
+                    break;
+                    
+                case 'default':
+                    statusDiv.className = 'status default';
+                    statusDiv.innerHTML = '⚠️ لم يتم طلب إذن الإشعارات بعد<br>انقر الزر أدناه لطلب الإذن';
+                    iconDiv.textContent = '❓';
+                    buttonsDiv.style.display = 'block';
+                    break;
+            }
+        }
+
+        async function requestPermission() {
+            if (!('Notification' in window)) {
+                alert('الإشعارات غير مدعومة في هذا المتصفح');
+                return;
+            }
+
+            try {
+                const permission = await Notification.requestPermission();
+                
+                // Small delay to let the browser update
+                setTimeout(() => {
+                    checkPermissionStatus();
+                    
+                    if (permission === 'granted') {
+                        // Show success notification
+                        new Notification('🎉 تم تفعيل الإشعارات!', {
+                            body: 'الآن يمكنك تلقي إشعارات من هاي تك',
+                            icon: '/icons/icon-192x192.png'
+                        });
+                    }
+                }, 100);
+                
+            } catch (error) {
+                console.error('خطأ في طلب الإذن:', error);
+                alert('حدث خطأ. يرجى تفعيل الإشعارات يدوياً من إعدادات المتصفح');
+            }
+        }
+
+        function testNotification() {
+            if (Notification.permission !== 'granted') {
+                alert('يرجى تفعيل إذن الإشعارات أولاً');
+                return;
+            }
+
+            try {
+                const notification = new Notification('🧪 اختبار ناجح!', {
+                    body: 'الإشعارات تعمل بشكل صحيح الآن',
+                    icon: '/icons/icon-192x192.png',
+                    tag: 'permission-test'
+                });
+
+                notification.onclick = () => {
+                    alert('✅ تم النقر على الإشعار - كل شيء يعمل بشكل مثالي!');
+                    notification.close();
+                };
+
+            } catch (error) {
+                console.error('خطأ في الاختبار:', error);
+                alert('حدث خطأ في إرسال الإشعار');
+            }
+        }
+
+        // Auto-refresh permission status every 2 seconds
+        setInterval(checkPermissionStatus, 2000);
+    </script>
+</body>
+</html>

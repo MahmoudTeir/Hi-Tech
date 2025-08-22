@@ -1,0 +1,413 @@
+/**
+ * Hi-Tech Internet Hotspot Portal - Watch Page Styles
+ * Copyright (c) 2025 Mahmoud. All rights reserved.
+ * 
+ * Developed by: Mahmoud
+ * Website: Hi-Tech Internet Services
+ * Description: Football and films streaming page styling
+ * 
+ * This software is proprietary and confidential.
+ * Unauthorized copying, distribution, or modification is strictly prohibited.
+ */
+
+/* Watch Container */
+.watch-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.watch-card {
+    background: var(--glass-white);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 80px rgba(139, 92, 246, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+    padding: 32px;
+    animation: slideUp 0.6s ease-out;
+    width: 100%;
+}
+
+/* Header */
+.watch-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.watch-header h1 {
+    color: var(--text-accent);
+    font-size: 28px;
+    font-weight: 700;
+    margin: 16px 0 8px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.back-btn {
+    background: linear-gradient(135deg, var(--accent-coral), var(--accent-peach));
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: var(--text-accent);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(254, 202, 202, 0.4);
+}
+
+/* Server Status */
+.server-status {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.server-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.server-icon {
+    font-size: 32px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+}
+
+.server-details h3 {
+    color: var(--text-light);
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.server-ip {
+    color: var(--primary-green);
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--error-red);
+    animation: pulse 2s infinite;
+}
+
+.status-dot.online {
+    background: var(--primary-green);
+}
+
+.status-text {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* Content Categories */
+.content-categories h2 {
+    color: var(--text-light);
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 24px 0;
+    text-align: center;
+}
+
+.category-section {
+    margin-bottom: 32px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.category-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--accent-mint), var(--accent-sage));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-header h3 {
+    color: var(--text-light);
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.content-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.content-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.content-thumbnail {
+    position: relative;
+    background: linear-gradient(135deg, #1F2937, #374151);
+    border-radius: 12px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.play-button {
+    font-size: 32px;
+    color: white;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.content-item:hover .play-button {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.live-badge, .quality-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.live-badge {
+    background: var(--error-red);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.quality-badge {
+    background: var(--primary-green);
+    color: white;
+}
+
+.content-info h4 {
+    color: var(--text-light);
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.content-info p {
+    color: var(--text-muted);
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.watch-now-btn {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    width: 100%;
+}
+
+.watch-now-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Connection Instructions */
+.connection-info {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.connection-info h3 {
+    color: var(--text-light);
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.instruction-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.step-number {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.step p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Contact Info */
+.contact-info {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.support-label {
+    font-weight: 600;
+}
+
+.phone, .email {
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+.location {
+    color: var(--accent-coral);
+    font-weight: 600;
+}
+
+.server-ip {
+    color: #8B5CF6;
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .watch-container {
+        padding: 16px;
+    }
+    
+    .watch-card {
+        padding: 24px;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .server-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .category-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .watch-header h1 {
+        font-size: 24px;
+    }
+    
+    .content-thumbnail {
+        height: 100px;
+    }
+    
+    .instruction-steps {
+        gap: 16px;
+    }
+    
+    .step {
+        flex-direction: column;
+        text-align: center;
+    }
+}

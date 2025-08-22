@@ -1,0 +1,16 @@
+# Hi Tech Internet - Error Messages (Arabic/English)
+# رسائل الخطأ - هاي تك للإنترنت (عربي/إنجليزي)
+# You can customize these messages as needed
+# Use $(variable) syntax to include dynamic content
+
+invalid username or password = اسم المستخدم أو كلمة المرور غير صحيحة. يرجى التحقق من البيانات والمحاولة مرة أخرى.
+user session limit reached = لقد وصلت إلى الحد الأقصى لعدد الجلسات المتزامنة. يرجى تسجيل الخروج من الأجهزة الأخرى.
+no more sessions are allowed for the user = وصل حسابك إلى حد الجلسات المسموح. يرجى الاتصال بالدعم الفني.
+session timeout = انتهت صلاحية جلستك بسبب عدم النشاط. يرجى تسجيل الدخول مرة أخرى للمتابعة.
+radius timeout = انتهت مهلة خادم المصادقة. يرجى المحاولة مرة أخرى لاحقاً.
+authorization failed = فشل في التفويض. يرجى الاتصال بفريق الدعم الفني.
+traffic limit reached = لقد وصلت إلى حد البيانات المسموح. يرجى ترقية باقتك للمتابعة.
+trial time limit reached = انتهت فترة التجربة المجانية. يرجى شراء باقة للمتابعة.
+trial traffic limit reached = تم الوصول إلى حد بيانات التجربة المجانية. يرجى شراء باقة للمتابعة.
+your account has been disabled = تم إيقاف حسابك. يرجى الاتصال بالدعم الفني للمساعدة.
+web-proxy required = مطلوب تكوين البروكسي. يرجى الاتصال بالدعم الفني.

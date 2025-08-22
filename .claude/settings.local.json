@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(rmdir:*)",
+      "Bash(rd:*)",
+      "Bash(rm:*)",
+      "Bash(start login.html)",
+      "WebSearch",
+      "Bash(start speed-test.html)",
+      "Bash(start watch.html)",
+      "Bash(start status.html)",
+      "Bash(start admin.html)",
+      "Bash(start notification-tester.html)",
+      "Bash(start:*)",
+      "Bash(del \"C:\\Users\\zarif\\Desktop\\Coding\\Hotspot HiTech\\admin-test.html\")",
+      "Bash(python:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

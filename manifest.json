@@ -1,0 +1,144 @@
+{
+  "_copyright": "Hi-Tech Internet Hotspot Portal - PWA Manifest | Copyright (c) 2025 Mahmoud. All rights reserved. | Developed by: Mahmoud | This software is proprietary and confidential.",
+  "name": "هاي تك للإنترنت - Hi-Tech Internet",
+  "short_name": "هاي تك",
+  "description": "بوابة الإنترنت المتميزة - هاي تك للإنترنت السريع والموثوق",
+  "start_url": "/login.html",
+  "display": "standalone",
+  "background_color": "#1E293B",
+  "theme_color": "#22C55E",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "اختبار السرعة",
+      "short_name": "السرعة",
+      "description": "قياس سرعة الإنترنت",
+      "url": "/speed-test.html",
+      "icons": [
+        {
+          "src": "icons/speed-test-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "حالة الاتصال",
+      "short_name": "الحالة",
+      "description": "عرض حالة الاتصال",
+      "url": "/status.html",
+      "icons": [
+        {
+          "src": "icons/status-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "مشاهدة المحتوى",
+      "short_name": "المحتوى",
+      "description": "مشاهدة الأفلام والمباريات",
+      "url": "/watch.html",
+      "icons": [
+        {
+          "src": "icons/watch-icon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/login-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "صفحة تسجيل الدخول"
+    },
+    {
+      "src": "screenshots/login-mobile.png",
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "صفحة تسجيل الدخول - الجوال"
+    },
+    {
+      "src": "screenshots/status-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "صفحة حالة الاتصال"
+    },
+    {
+      "src": "screenshots/speed-test-mobile.png",
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "اختبار السرعة - الجوال"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "protocol_handlers": [
+    {
+      "protocol": "web+hitech",
+      "url": "/login.html?action=%s"
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}

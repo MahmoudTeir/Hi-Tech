@@ -1,0 +1,97 @@
+/**
+ * Hi-Tech Internet Hotspot Portal - Error Page Styles
+ * Copyright (c) 2025 Mahmoud. All rights reserved.
+ * 
+ * Developed by: Mahmoud
+ * Website: Hi-Tech Internet Services
+ * Description: Error page specific styling and layout
+ * 
+ * This software is proprietary and confidential.
+ * Unauthorized copying, distribution, or modification is strictly prohibited.
+ */
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.error-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid var(--glass-border);
+    padding: 48px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 80px var(--shadow-green),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+    animation: slideUp 0.6s ease-out;
+}
+
+.error-icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.error-card h1 {
+    color: white;
+    margin: 0 0 16px;
+    font-size: 32px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.error-card p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 32px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 30px var(--shadow-green);
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px var(--shadow-green);
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .error-card {
+        padding: 32px 24px;
+    }
+    
+    .error-card h1 {
+        font-size: 28px;
+    }
+    
+    .error-icon {
+        font-size: 48px;
+    }
+    
+    .back-btn {
+        padding: 14px 24px;
+        font-size: 14px;
+    }
+}

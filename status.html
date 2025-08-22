@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+    Hi-Tech Internet Hotspot Portal - Status Page
+    Copyright (c) 2025 Mahmoud. All rights reserved.
+    
+    Developed by: Mahmoud
+    Website: Hi-Tech Internet Services
+    Description: User connection status and statistics page
+    
+    This software is proprietary and confidential.
+    Unauthorized copying, distribution, or modification is strictly prohibited.
+-->
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هاي تك - حالة الاتصال</title>
+    <meta http-equiv="refresh" content="$(refresh-timeout-secs)">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="عرض حالة الاتصال والإحصائيات - هاي تك للإنترنت">
+    <meta name="theme-color" content="#22C55E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="هاي تك">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/status.css">
+    <link rel="stylesheet" href="css/arabic.css">
+<!--     <link rel="stylesheet" href="css/dynamic-themes.css">
+ --></head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="bg-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+    </div>
+
+    <div class="status-container">
+        <div class="status-card">
+            <div class="status-header">
+                <!-- Logo Section -->
+                <div class="logo-section">
+                    <div class="logo">
+                        <span class="logo-text">Hi-Tech</span>
+                    </div>
+                    <h1>هاي تك للإنترنت</h1>
+                    <p class="tagline">حالة الاتصال والخدمات</p>
+                </div>
+            </div>
+
+            <div class="user-info">
+                <div class="user-avatar">
+                    <span style="color: white; font-size: 24px;">👤</span>
+                </div>
+                <div>
+                    <h2 style="color: #FFFFFF; margin: 0; font-weight: 600; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">$(username)</h2>
+                    <p style="color: #10B981; margin: 0; font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">IP: $(ip)</p>
+                </div>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-value">$(uptime)</div>
+                    <div class="stat-label">مدة الجلسة</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$(bytes-in-nice)</div>
+                    <div class="stat-label">البيانات المحملة</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$(bytes-out-nice)</div>
+                    <div class="stat-label">البيانات المرسلة</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$(session-time-left)</div>
+                    <div class="stat-label">الوقت المتبقي</div>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <div style="color: #FFFFFF; margin-bottom: 8px; font-weight: 600; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">استخدام البيانات</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;"></div>
+                </div>
+            </div>
+            <!-- Services Section -->
+            <div class="services-section">
+                <!-- Speed Test Button -->
+                <div class="service-item">
+                    <h3>اختبار سرعة الإنترنت</h3>
+                    <p>قم بقياس سرعة اتصالك بدقة وموثوقية</p>
+                    <a href="speed-test.html" class="service-btn speed-test-btn">
+                        🚀 اختبار السرعة الآن
+                    </a>
+                </div>
+
+                <!-- Watch Football & Films Button -->
+                <div class="service-item">
+                    <h3>مشاهدة كرة القدم والأفلام</h3>
+                    <p>استمتع بمحتوى البث المباشر والأفلام على خادمنا المحلي</p>
+                    <a href="watch.html" class="service-btn watch-btn">
+                        📺 مشاهدة المحتوى
+                    </a>
+                </div>
+            </div>
+
+            <form action="$(link-logout)" method="post">
+                <input type="hidden" name="erase-cookie" value="on">
+                <button type="submit" class="logout-btn">قطع الاتصال</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/pwa-manager.js"></script>
+<!--     <script src="js/dynamic-themes.js"></script>
+ --></body>
+</html>

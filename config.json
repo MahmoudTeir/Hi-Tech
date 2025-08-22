@@ -1,0 +1,46 @@
+{
+  "_copyright": "Hi-Tech Internet Hotspot Portal - Configuration File | Copyright (c) 2025 Mahmoud. All rights reserved. | Developed by: Mahmoud | This software is proprietary and confidential.",
+  "branding": {
+    "company_name": "Hi Tech Internet",
+    "logo_text": "HT",
+    "tagline": "Lightning Fast • Reliable • Secure",
+    "welcome_message": "🚀 Welcome to the future of connectivity! Experience blazing-fast internet speeds and unparalleled reliability with Hi Tech's premium network services."
+  },
+  "contact": {
+    "phone": "+1-800-HITECH-1",
+    "email": "support@hitech.net",
+    "address": "123 Technology Drive, Silicon Valley, CA 94025"
+  },
+  "packages": [
+    {
+      "name": "Basic",
+      "speed": "10 Mbps",
+      "price": "$19.99/mo",
+      "default": true
+    },
+    {
+      "name": "Pro",
+      "speed": "50 Mbps",
+      "price": "$39.99/mo",
+      "default": false
+    },
+    {
+      "name": "Ultra",
+      "speed": "100 Mbps",
+      "price": "$59.99/mo",
+      "default": false
+    }
+  ],
+  "design": {
+    "primary_color": "#10B981",
+    "secondary_color": "#059669",
+    "particle_count": 50,
+    "animation_duration": "20s"
+  },
+  "features": {
+    "show_packages": true,
+    "show_particles": true,
+    "show_welcome_message": true,
+    "auto_refresh_status": true
+  }
+}

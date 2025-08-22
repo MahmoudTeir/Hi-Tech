@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<!--
+    Hi-Tech Internet Hotspot Portal - Watch Content
+    Copyright (c) 2025 Mahmoud. All rights reserved.
+    
+    Developed by: Mahmoud
+    Website: Hi-Tech Internet Services
+    Description: Streaming content page for football and movies
+    
+    This software is proprietary and confidential.
+    Unauthorized copying, distribution, or modification is strictly prohibited.
+-->
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشاهدة كرة القدم والأفلام - هاي تك</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="مشاهدة المباريات والأفلام - خادم البث المحلي">
+    <meta name="theme-color" content="#22C55E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="هاي تك">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/arabic.css">
+    <link rel="stylesheet" href="css/watch.css">
+<!--     <link rel="stylesheet" href="css/dynamic-themes.css">
+ --></head>
+<body>
+    <!-- Animated Background -->
+    <div class="particles" id="particles"></div>
+    <div class="bg-shapes">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+    </div>
+
+    <!-- Watch Container -->
+    <div class="watch-container">
+        <div class="watch-card">
+            <!-- Header Section -->
+            <div class="watch-header">
+                <div class="logo">
+                    <span class="logo-text">Hi-Tech</span>
+                </div>
+                <h1>مشاهدة كرة القدم والأفلام</h1>
+                <p class="subtitle">استمتع بمحتوى البث المباشر والأفلام عالية الجودة</p>
+                
+                <!-- Back Button -->
+                <button class="back-btn" onclick="window.location.href='status.html'">
+                    ← العودة لصفحة الحالة
+                </button>
+            </div>
+
+            <!-- Server Status -->
+            <div class="server-status">
+                <div class="server-info">
+                    <div class="server-icon">🌐</div>
+                    <div class="server-details">
+                        <h3>خادم البث المحلي</h3>
+                        <p class="server-ip">IP: 2.2.2.2</p>
+                        <div class="status-indicator">
+                            <div class="status-dot online" id="serverStatus"></div>
+                            <span class="status-text" id="statusText">متصل</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Categories -->
+            <div class="content-categories">
+                <h2>المحتوى المتاح</h2>
+                
+                <!-- Football Section -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">⚽</div>
+                        <h3>كرة القدم المباشرة</h3>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-thumbnail">
+                                <div class="play-button">▶</div>
+                                <div class="live-badge">مباشر</div>
+                            </div>
+                            <div class="content-info">
+                                <h4>المباريات المباشرة</h4>
+                                <p>جميع المباريات الحية بجودة عالية</p>
+                                <button class="watch-now-btn" onclick="connectToServer('football-live')">
+                                    📺 شاهد الآن
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-thumbnail">
+                                <div class="play-button">▶</div>
+                            </div>
+                            <div class="content-info">
+                                <h4>مباريات الأمس</h4>
+                                <p>إعادة عرض مباريات الأمس</p>
+                                <button class="watch-now-btn" onclick="connectToServer('football-replay')">
+                                    🔄 إعادة المشاهدة
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Films Section -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon">🎬</div>
+                        <h3>الأفلام والمسلسلات</h3>
+                    </div>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-thumbnail">
+                                <div class="play-button">▶</div>
+                                <div class="quality-badge">HD</div>
+                            </div>
+                            <div class="content-info">
+                                <h4>الأفلام العربية</h4>
+                                <p>مجموعة من أفضل الأفلام العربية</p>
+                                <button class="watch-now-btn" onclick="connectToServer('arabic-movies')">
+                                    🎭 شاهد الآن
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-thumbnail">
+                                <div class="play-button">▶</div>
+                                <div class="quality-badge">4K</div>
+                            </div>
+                            <div class="content-info">
+                                <h4>الأفلام الأجنبية</h4>
+                                <p>أحدث الأفلام الأجنبية المترجمة</p>
+                                <button class="watch-now-btn" onclick="connectToServer('foreign-movies')">
+                                    🌍 شاهد الآن
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-thumbnail">
+                                <div class="play-button">▶</div>
+                                <div class="quality-badge">HD</div>
+                            </div>
+                            <div class="content-info">
+                                <h4>المسلسلات</h4>
+                                <p>أفضل المسلسلات العربية والأجنبية</p>
+                                <button class="watch-now-btn" onclick="connectToServer('tv-series')">
+                                    📺 شاهد الآن
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-thumbnail">
+                                <div class="play-button">▶</div>
+                                <div class="quality-badge">HD</div>
+                            </div>
+                            <div class="content-info">
+                                <h4>أفلام الأطفال</h4>
+                                <p>محتوى آمن ومناسب للأطفال</p>
+                                <button class="watch-now-btn" onclick="connectToServer('kids-content')">
+                                    👶 شاهد الآن
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection Instructions -->
+            <div class="connection-info">
+                <h3>تعليمات الاتصال</h3>
+                <div class="instruction-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <p>تأكد من أن جهازك متصل بشبكة هاي تك</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <p>اضغط على "شاهد الآن" لاختيار المحتوى</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <p>سيتم توجيهك إلى خادم البث المحلي تلقائياً</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="contact-info">
+                📞 <span class="support-label">الدعم الفني 24/7:</span> <span class="phone">0599328821</span> | 📧 <span class="email">support@hitech.net</span><br>
+                📍 <span class="location">معن</span> | 🌐 <span class="server-ip">خادم البث: 2.2.2.2</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/particles.js"></script>
+    <script src="js/watch.js"></script>
+    <script src="js/pwa-manager.js"></script>
+<!--     <script src="js/dynamic-themes.js"></script>
+ --></body>
+</html>

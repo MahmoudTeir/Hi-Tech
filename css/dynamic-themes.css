@@ -1,0 +1,457 @@
+/**
+ * Hi-Tech Internet Hotspot Portal - Dynamic Themes
+ * Copyright (c) 2025 Mahmoud. All rights reserved.
+ * 
+ * Developed by: Mahmoud
+ * Website: Hi-Tech Internet Services
+ * Description: Dynamic theme system with time-based and seasonal variations
+ * 
+ * This software is proprietary and confidential.
+ * Unauthorized copying, distribution, or modification is strictly prohibited.
+ */
+
+/* Theme Base Classes */
+body {
+    transition: background 1s ease, color 1s ease;
+}
+
+/* Time-based theme classes */
+.theme-نهار {
+    --theme-accent-color: var(--dynamic-primary);
+}
+
+.theme-ليل {
+    --theme-accent-color: var(--dynamic-primary);
+}
+
+.theme-فجر {
+    --theme-accent-color: var(--dynamic-primary);
+}
+
+.theme-غروب {
+    --theme-accent-color: var(--dynamic-primary);
+}
+
+/* Seasonal theme classes */
+.season-spring .logo {
+    box-shadow: 
+        0 0 0 3px rgba(16, 185, 129, 0.2),
+        0 0 0 6px rgba(16, 185, 129, 0.1),
+        0 20px 40px rgba(16, 185, 129, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2) !important;
+}
+
+.season-summer .logo {
+    box-shadow: 
+        0 0 0 3px rgba(245, 158, 11, 0.2),
+        0 0 0 6px rgba(245, 158, 11, 0.1),
+        0 20px 40px rgba(245, 158, 11, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2) !important;
+}
+
+.season-autumn .logo {
+    box-shadow: 
+        0 0 0 3px rgba(234, 88, 12, 0.2),
+        0 0 0 6px rgba(234, 88, 12, 0.1),
+        0 20px 40px rgba(234, 88, 12, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2) !important;
+}
+
+.season-winter .logo {
+    box-shadow: 
+        0 0 0 3px rgba(14, 165, 233, 0.2),
+        0 0 0 6px rgba(14, 165, 233, 0.1),
+        0 20px 40px rgba(14, 165, 233, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Weather theme classes */
+.weather-sunny .particles .particle {
+    background: radial-gradient(circle, rgba(252, 211, 77, 0.8), rgba(245, 158, 11, 0.4));
+    animation: sunny-sparkle 2s ease-in-out infinite alternate;
+}
+
+.weather-cloudy .particles .particle {
+    background: radial-gradient(circle, rgba(203, 213, 225, 0.6), rgba(148, 163, 184, 0.3));
+    animation: cloudy-drift 3s ease-in-out infinite alternate;
+}
+
+.weather-rainy .particles .particle {
+    background: linear-gradient(rgba(148, 163, 184, 0.8), rgba(100, 116, 139, 0.4));
+    animation: rainy-fall 1s linear infinite;
+}
+
+.weather-snowy .particles .particle {
+    background: radial-gradient(circle, rgba(241, 245, 249, 0.9), rgba(226, 232, 240, 0.6));
+    animation: snowy-flutter 4s ease-in-out infinite;
+}
+
+/* Enhanced button styling with dynamic colors */
+.submit-btn, .speed-test-btn, .watch-btn {
+    background: linear-gradient(135deg, var(--dynamic-primary), var(--dynamic-secondary)) !important;
+    border-color: var(--dynamic-accent) !important;
+    color: var(--dynamic-text-light) !important;
+    box-shadow: 0 8px 32px var(--dynamic-shadow) !important;
+    transition: all 0.3s ease !important;
+}
+
+.submit-btn:hover, .speed-test-btn:hover, .watch-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 48px var(--dynamic-shadow) !important;
+}
+
+/* Dynamic text colors */
+.theme-نهار h1, .theme-نهار h2, .theme-نهار h3,
+.theme-فجر h1, .theme-فجر h2, .theme-فجر h3,
+.theme-غروب h1, .theme-غروب h2, .theme-غروب h3 {
+    color: var(--dynamic-text) !important;
+}
+
+.theme-ليل h1, .theme-ليل h2, .theme-ليل h3 {
+    color: var(--dynamic-text-light) !important;
+}
+
+/* Weather-specific animations */
+@keyframes sunny-sparkle {
+    0% { 
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    100% { 
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes cloudy-drift {
+    0% { 
+        opacity: 0.4;
+        transform: translateX(-5px);
+    }
+    100% { 
+        opacity: 0.7;
+        transform: translateX(5px);
+    }
+}
+
+@keyframes rainy-fall {
+    0% { 
+        opacity: 0.8;
+        transform: translateY(-10px);
+    }
+    100% { 
+        opacity: 0.3;
+        transform: translateY(10px);
+    }
+}
+
+@keyframes snowy-flutter {
+    0% { 
+        opacity: 0.7;
+        transform: rotate(0deg) translateY(-3px);
+    }
+    25% { 
+        opacity: 1;
+        transform: rotate(90deg) translateY(0px);
+    }
+    50% { 
+        opacity: 0.8;
+        transform: rotate(180deg) translateY(3px);
+    }
+    75% { 
+        opacity: 0.9;
+        transform: rotate(270deg) translateY(0px);
+    }
+    100% { 
+        opacity: 0.7;
+        transform: rotate(360deg) translateY(-3px);
+    }
+}
+
+/* Enhanced card backgrounds for different weather */
+.weather-sunny .login-card,
+.weather-sunny .status-card,
+.weather-sunny .speed-test-card,
+.weather-sunny .watch-card {
+    background: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(252, 211, 77, 0.3) !important;
+}
+
+.weather-cloudy .login-card,
+.weather-cloudy .status-card,
+.weather-cloudy .speed-test-card,
+.weather-cloudy .watch-card {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(203, 213, 225, 0.4) !important;
+}
+
+.weather-rainy .login-card,
+.weather-rainy .status-card,
+.weather-rainy .speed-test-card,
+.weather-rainy .watch-card {
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(30px) !important;
+    border: 1px solid rgba(148, 163, 184, 0.5) !important;
+}
+
+.weather-snowy .login-card,
+.weather-snowy .status-card,
+.weather-snowy .speed-test-card,
+.weather-snowy .watch-card {
+    background: rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(241, 245, 249, 0.6) !important;
+}
+
+/* Theme control panel styling */
+#theme-controls {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+#theme-controls:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15) !important;
+}
+
+#theme-controls select {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+#theme-controls select:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#theme-controls select:focus {
+    outline: none !important;
+    border-color: var(--dynamic-primary) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Date/Time/Weather Display */
+.datetime-weather-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.datetime-weather-display:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+}
+
+.datetime-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.current-time {
+    color: var(--dynamic-text-light);
+    font-size: 24px;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+.current-date {
+    color: var(--dynamic-text-light);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.9;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.weather-icon {
+    font-size: 32px;
+    animation: weather-pulse 3s ease-in-out infinite;
+}
+
+.weather-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.weather-type {
+    color: var(--dynamic-text-light);
+    font-size: 16px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2px;
+}
+
+.theme-info {
+    color: var(--dynamic-primary);
+    font-size: 12px;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Weather-specific styling */
+.weather-sunny .weather-icon {
+    filter: drop-shadow(0 0 8px rgba(252, 211, 77, 0.6));
+}
+
+.weather-cloudy .weather-icon {
+    filter: drop-shadow(0 0 8px rgba(203, 213, 225, 0.6));
+}
+
+.weather-rainy .weather-icon {
+    filter: drop-shadow(0 0 8px rgba(148, 163, 184, 0.6));
+}
+
+.weather-snowy .weather-icon {
+    filter: drop-shadow(0 0 8px rgba(241, 245, 249, 0.6));
+}
+
+/* Weather animation */
+@keyframes weather-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+/* Season-specific theme info styling */
+.season-spring .theme-info {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10B981;
+}
+
+.season-summer .theme-info {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #F59E0B;
+}
+
+.season-autumn .theme-info {
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.2), rgba(234, 88, 12, 0.1));
+    border-color: rgba(234, 88, 12, 0.3);
+    color: #EA580C;
+}
+
+.season-winter .theme-info {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(14, 165, 233, 0.1));
+    border-color: rgba(14, 165, 233, 0.3);
+    color: #0EA5E9;
+}
+
+/* Responsive adjustments for theme controls */
+@media (max-width: 768px) {
+    #theme-controls {
+        top: 10px !important;
+        right: 10px !important;
+        padding: 8px !important;
+    }
+    
+    #theme-controls select {
+        padding: 6px 8px !important;
+        font-size: 11px !important;
+    }
+    
+    /* Responsive datetime-weather display */
+    .datetime-weather-display {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+    
+    .datetime-info {
+        align-items: center;
+        text-align: center;
+    }
+    
+    .current-time {
+        font-size: 20px;
+    }
+    
+    .current-date {
+        font-size: 12px;
+    }
+    
+    .weather-info {
+        gap: 8px;
+    }
+    
+    .weather-icon {
+        font-size: 24px;
+    }
+    
+    .weather-details {
+        align-items: center;
+    }
+    
+    .weather-type {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .datetime-weather-display {
+        margin: 16px 0;
+        padding: 10px 14px;
+    }
+    
+    .current-time {
+        font-size: 18px;
+    }
+    
+    .current-date {
+        font-size: 11px;
+    }
+    
+    .weather-icon {
+        font-size: 20px;
+    }
+    
+    .weather-type {
+        font-size: 13px;
+    }
+    
+    .theme-info {
+        font-size: 10px;
+        padding: 1px 6px;
+    }
+}
