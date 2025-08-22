@@ -1,0 +1,313 @@
+/**
+ * Hi-Tech Internet Hotspot Portal - Notification Server
+ * Copyright (c) 2025 Mahmoud. All rights reserved.
+ * 
+ * Simple Node.js server for cross-device notifications
+ * Works with hotspot environments and handles real-time broadcasting
+ */
+
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+const url = require('url');
+
+// Configuration
+const PORT = process.env.PORT || 3000;
+const ADMIN_TOKEN = 'hitech_admin_2025'; // Simple token for admin authentication
+
+// Store active connections and notifications
+let activeConnections = new Set();
+let activeNotifications = [];
+
+// MIME types for serving static files
+const mimeTypes = {
+    '.html': 'text/html',
+    '.js': 'text/javascript',
+    '.css': 'text/css',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.ico': 'image/x-icon'
+};
+
+// Create HTTP server
+const server = http.createServer((req, res) => {
+    const parsedUrl = url.parse(req.url, true);
+    const pathname = parsedUrl.pathname;
+    const method = req.method;
+
+    console.log(`${method} ${pathname} - ${new Date().toISOString()}`);
+
+    // CORS headers for cross-origin requests
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    // Handle preflight requests
+    if (method === 'OPTIONS') {
+        res.writeHead(200);
+        res.end();
+        return;
+    }
+
+    // API Routes
+    if (pathname.startsWith('/api/')) {
+        handleApiRequest(req, res, pathname, method);
+        return;
+    }
+
+    // Server-Sent Events for real-time notifications
+    if (pathname === '/notifications/stream') {
+        handleSSE(req, res);
+        return;
+    }
+
+    // Serve static files
+    serveStaticFile(req, res, pathname);
+});
+
+/**
+ * Handle API requests
+ */
+function handleApiRequest(req, res, pathname, method) {
+    // Send notification API
+    if (pathname === '/api/notifications/send' && method === 'POST') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            try {
+                const data = JSON.parse(body);
+                
+                // Simple authentication check
+                if (data.token !== ADMIN_TOKEN) {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Unauthorized' }));
+                    return;
+                }
+
+                // Create notification object
+                const notification = {
+                    id: Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    notificationType: data.notificationType || 'service_announcement',
+                    title: data.title || 'إشعار من الإدارة',
+                    message: data.message || 'لديك إشعار جديد',
+                    duration: data.duration || 300000, // 5 minutes default
+                    displayDuration: data.displayDuration || 5,
+                    priority: data.priority || 'normal',
+                    timestamp: Date.now(),
+                    sender: 'admin'
+                };
+
+                // Store notification
+                activeNotifications.push(notification);
+                
+                // Clean old notifications (keep last 10)
+                if (activeNotifications.length > 10) {
+                    activeNotifications = activeNotifications.slice(-10);
+                }
+
+                // Broadcast to all connected clients
+                const message = JSON.stringify({
+                    type: 'notification',
+                    data: notification
+                });
+
+                console.log(`📤 Broadcasting notification to ${activeConnections.size} clients`);
+                
+                for (const client of activeConnections) {
+                    try {
+                        client.write(`data: ${message}\n\n`);
+                    } catch (error) {
+                        console.error('Error sending to client:', error);
+                        activeConnections.delete(client);
+                    }
+                }
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ 
+                    success: true, 
+                    notificationId: notification.id,
+                    clientsNotified: activeConnections.size
+                }));
+
+            } catch (error) {
+                console.error('Error processing notification:', error);
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid JSON' }));
+            }
+        });
+        return;
+    }
+
+    // Get active notifications API
+    if (pathname === '/api/notifications/active' && method === 'GET') {
+        const now = Date.now();
+        const active = activeNotifications.filter(notif => {
+            const expiresAt = notif.timestamp + notif.duration;
+            return expiresAt > now;
+        });
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ notifications: active }));
+        return;
+    }
+
+    // Server status API
+    if (pathname === '/api/status' && method === 'GET') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+            status: 'running',
+            connectedClients: activeConnections.size,
+            activeNotifications: activeNotifications.length,
+            uptime: process.uptime(),
+            timestamp: Date.now()
+        }));
+        return;
+    }
+
+    // 404 for unknown API routes
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'API endpoint not found' }));
+}
+
+/**
+ * Handle Server-Sent Events for real-time notifications
+ */
+function handleSSE(req, res) {
+    console.log('📡 New SSE connection established');
+
+    // Set SSE headers
+    res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Cache-Control'
+    });
+
+    // Add to active connections
+    activeConnections.add(res);
+
+    // Send welcome message
+    res.write(`data: ${JSON.stringify({
+        type: 'connected',
+        message: 'متصل بخدمة الإشعارات',
+        timestamp: Date.now()
+    })}\n\n`);
+
+    // Send any active notifications to new client
+    const now = Date.now();
+    const active = activeNotifications.filter(notif => {
+        const expiresAt = notif.timestamp + notif.duration;
+        return expiresAt > now;
+    });
+
+    if (active.length > 0) {
+        setTimeout(() => {
+            for (const notification of active) {
+                try {
+                    res.write(`data: ${JSON.stringify({
+                        type: 'notification',
+                        data: notification
+                    })}\n\n`);
+                } catch (error) {
+                    console.error('Error sending active notification:', error);
+                }
+            }
+        }, 1000); // Small delay to ensure connection is ready
+    }
+
+    // Handle client disconnect
+    req.on('close', () => {
+        console.log('📡 SSE connection closed');
+        activeConnections.delete(res);
+    });
+
+    req.on('error', (error) => {
+        console.error('SSE connection error:', error);
+        activeConnections.delete(res);
+    });
+
+    // Keep connection alive with periodic heartbeat
+    const heartbeat = setInterval(() => {
+        try {
+            res.write(`data: ${JSON.stringify({
+                type: 'heartbeat',
+                timestamp: Date.now()
+            })}\n\n`);
+        } catch (error) {
+            clearInterval(heartbeat);
+            activeConnections.delete(res);
+        }
+    }, 30000); // Every 30 seconds
+
+    // Clean up heartbeat on disconnect
+    req.on('close', () => {
+        clearInterval(heartbeat);
+    });
+}
+
+/**
+ * Serve static files
+ */
+function serveStaticFile(req, res, pathname) {
+    // Default to index.html for root
+    if (pathname === '/') {
+        pathname = '/login.html';
+    }
+
+    const filePath = path.join(__dirname, pathname);
+    const ext = path.extname(filePath);
+    const contentType = mimeTypes[ext] || 'application/octet-stream';
+
+    fs.readFile(filePath, (error, content) => {
+        if (error) {
+            if (error.code === 'ENOENT') {
+                res.writeHead(404, { 'Content-Type': 'text/html' });
+                res.end('<h1>404 - File Not Found</h1>');
+            } else {
+                res.writeHead(500, { 'Content-Type': 'text/html' });
+                res.end('<h1>500 - Internal Server Error</h1>');
+            }
+        } else {
+            res.writeHead(200, { 'Content-Type': contentType });
+            res.end(content);
+        }
+    });
+}
+
+// Start server
+server.listen(PORT, () => {
+    console.log('🚀 Hi-Tech Notification Server Started');
+    console.log(`🌐 Server running at http://localhost:${PORT}`);
+    console.log(`📡 SSE endpoint: http://localhost:${PORT}/notifications/stream`);
+    console.log(`🔔 Send notifications to: http://localhost:${PORT}/api/notifications/send`);
+    console.log(`📊 Server status: http://localhost:${PORT}/api/status`);
+    console.log(`🔐 Admin token: ${ADMIN_TOKEN}`);
+    console.log('Ready to broadcast notifications to all connected devices! 📱💻🖥️');
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    console.log('📴 Server shutting down gracefully...');
+    server.close(() => {
+        console.log('✅ Server closed');
+        process.exit(0);
+    });
+});
+
+// Clean up old notifications every 5 minutes
+setInterval(() => {
+    const now = Date.now();
+    const before = activeNotifications.length;
+    activeNotifications = activeNotifications.filter(notif => {
+        const expiresAt = notif.timestamp + notif.duration;
+        return expiresAt > now;
+    });
+    if (before !== activeNotifications.length) {
+        console.log(`🧹 Cleaned up ${before - activeNotifications.length} expired notifications`);
+    }
+}, 5 * 60 * 1000);

@@ -17,6 +17,8 @@ class EnhancedNotificationSystem {
         this.maxNotifications = 5; // Maximum notifications to show at once
         this.defaultDuration = 5000; // 5 seconds default
         this.isInitialized = false;
+        this.serverEventSource = null;
+        this.serverConnected = false;
         
         this.init();
     }
@@ -307,6 +309,9 @@ class EnhancedNotificationSystem {
         
         // Check for active server notifications (for new visitors)
         this.checkServerNotifications();
+        
+        // Connect to notification server via SSE
+        this.connectToNotificationServer();
         
         this.isInitialized = true;
         
@@ -856,6 +861,14 @@ class EnhancedNotificationSystem {
         setInterval(() => {
             this.checkServerNotifications();
         }, 15000);
+
+        // Auto-reconnect to server if connection is lost
+        setInterval(() => {
+            if (!this.serverConnected && !this.serverEventSource) {
+                console.log('🔄 Attempting to reconnect to notification server...');
+                this.connectToNotificationServer();
+            }
+        }, 30000); // Every 30 seconds
     }
 
     /**
@@ -1505,6 +1518,160 @@ class EnhancedNotificationSystem {
     getActiveCount() {
         return this.notifications.size;
     }
+
+    /**
+     * Connect to notification server via Server-Sent Events
+     */
+    connectToNotificationServer() {
+        try {
+            // Try different server URLs
+            const possibleUrls = [
+                'http://localhost:3000/notifications/stream',
+                'http://127.0.0.1:3000/notifications/stream',
+                'http://2.2.2.2:3000/notifications/stream', // Local server IP
+                '/notifications/stream' // Relative path if server is on same host
+            ];
+            
+            this.attemptServerConnection(possibleUrls, 0);
+            
+        } catch (error) {
+            console.error('❌ Error connecting to notification server:', error);
+        }
+    }
+    
+    /**
+     * Attempt to connect to server with fallback URLs
+     */
+    attemptServerConnection(urls, index) {
+        if (index >= urls.length) {
+            console.warn('⚠️ All server connection attempts failed');
+            return;
+        }
+        
+        const url = urls[index];
+        console.log(`🔌 Attempting to connect to notification server: ${url}`);
+        
+        try {
+            if (this.serverEventSource) {
+                this.serverEventSource.close();
+            }
+            
+            const eventSource = new EventSource(url);
+            
+            eventSource.onopen = () => {
+                console.log('✅ Connected to notification server successfully');
+                this.serverEventSource = eventSource;
+                this.serverConnected = true;
+            };
+            
+            eventSource.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    this.handleServerMessage(data);
+                } catch (parseError) {
+                    console.error('❌ Error parsing server message:', parseError);
+                }
+            };
+            
+            eventSource.onerror = (error) => {
+                console.error(`❌ Server connection error for ${url}:`, error);
+                this.serverConnected = false;
+                eventSource.close();
+                this.serverEventSource = null;
+                
+                // Try next URL
+                setTimeout(() => {
+                    this.attemptServerConnection(urls, index + 1);
+                }, 1000);
+            };
+            
+            // Timeout for connection attempt
+            setTimeout(() => {
+                if (!this.serverConnected) {
+                    console.warn(`⏱️ Connection timeout for ${url}`);
+                    eventSource.close();
+                    this.attemptServerConnection(urls, index + 1);
+                }
+            }, 5000);
+            
+        } catch (error) {
+            console.error(`❌ Error creating EventSource for ${url}:`, error);
+            setTimeout(() => {
+                this.attemptServerConnection(urls, index + 1);
+            }, 1000);
+        }
+    }
+    
+    /**
+     * Handle messages from the notification server
+     */
+    handleServerMessage(data) {
+        console.log('📡 Received server message:', data);
+        
+        switch (data.type) {
+            case 'connected':
+                console.log('👋 Server connection established:', data.message);
+                break;
+                
+            case 'heartbeat':
+                // Server heartbeat - connection is alive
+                break;
+                
+            case 'notification':
+                // New notification from server
+                console.log('🔔 Received notification from server:', data.data);
+                this.showServerNotificationFromSSE(data.data);
+                break;
+                
+            default:
+                console.log('💬 Unknown server message type:', data.type);
+        }
+    }
+    
+    /**
+     * Show notification received via SSE from server
+     */
+    showServerNotificationFromSSE(notificationData) {
+        // Check if we already have this notification to prevent duplicates
+        const notificationId = notificationData.id || `${notificationData.notificationType}_${notificationData.timestamp}`;
+        
+        if (this.isNotificationAlreadyShown(notificationId)) {
+            console.log('⏭️ SSE notification already shown, skipping:', notificationId);
+            return;
+        }
+        
+        // Calculate remaining time
+        const now = Date.now();
+        const expiresAt = notificationData.timestamp + notificationData.duration;
+        const remainingTime = Math.max(0, expiresAt - now);
+        
+        if (remainingTime < 1000) {
+            console.log('⏱️ SSE notification expired, skipping:', notificationId);
+            return;
+        }
+        
+        // Show the notification
+        const displayData = {
+            ...notificationData,
+            duration: remainingTime,
+            displayDurationMinutes: Math.ceil(remainingTime / (1000 * 60))
+        };
+        
+        console.log('🔔 Showing SSE notification:', displayData);
+        this.showNotification(displayData);
+    }
+    
+    /**
+     * Disconnect from notification server
+     */
+    disconnectFromNotificationServer() {
+        if (this.serverEventSource) {
+            console.log('🔌 Disconnecting from notification server');
+            this.serverEventSource.close();
+            this.serverEventSource = null;
+            this.serverConnected = false;
+        }
+    }
 }
 
 // Initialize enhanced notifications system
@@ -1522,3 +1689,10 @@ if (document.readyState === 'loading') {
 
 // Export for debugging
 window.EnhancedNotificationSystem = EnhancedNotificationSystem;
+
+// Clean up on page unload
+window.addEventListener('beforeunload', () => {
+    if (window.enhancedNotifications) {
+        window.enhancedNotifications.disconnectFromNotificationServer();
+    }
+});

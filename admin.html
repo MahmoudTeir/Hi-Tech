@@ -1258,6 +1258,9 @@
                 
                 localStorage.setItem('server_notifications', JSON.stringify(recentNotifications));
                 
+                // Send to notification server for real cross-device broadcasting
+                await sendToNotificationServer(notificationData);
+                
                 // Send to actual users via MikroTik (if configured)
                 await broadcastToMikroTikUsers(notificationData);
                 
@@ -1310,6 +1313,59 @@
                 
             } catch (error) {
                 console.error('❌ Error broadcasting to MikroTik users:', error);
+            }
+        }
+
+        // Send notification to server for real cross-device broadcasting
+        async function sendToNotificationServer(notificationData) {
+            const possibleUrls = [
+                'http://localhost:3000/api/notifications/send',
+                'http://127.0.0.1:3000/api/notifications/send',
+                'http://2.2.2.2:3000/api/notifications/send'
+            ];
+            
+            const payload = {
+                token: 'hitech_admin_2025', // Admin token
+                notificationType: notificationData.notificationType,
+                title: notificationData.title,
+                message: notificationData.message,
+                duration: notificationData.duration,
+                displayDuration: notificationData.displayDuration,
+                priority: notificationData.priority
+            };
+            
+            let success = false;
+            
+            for (const url of possibleUrls) {
+                try {
+                    console.log(`🌐 Attempting to send to server: ${url}`);
+                    
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log(`✅ Server notification sent successfully:`, result);
+                        showMessage(`📡 إشعار الخادم: تم إرسال الإشعار إلى ${result.clientsNotified || 0} جهاز متصل`, 'success');
+                        success = true;
+                        break;
+                    } else {
+                        console.warn(`⚠️ Server returned error: ${response.status}`);
+                    }
+                    
+                } catch (error) {
+                    console.warn(`❌ Failed to send to ${url}:`, error.message);
+                }
+            }
+            
+            if (!success) {
+                console.warn('⚠️ Could not connect to notification server - using fallback localStorage method only');
+                showMessage('⚠️ الخادم غير متصل - سيتم استخدام الطريقة المحلية فقط', 'warning');
             }
         }
 
