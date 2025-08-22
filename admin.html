@@ -1224,29 +1224,20 @@
                     displayDuration: notificationData.displayDuration
                 });
                 
-                // Send single notification - prioritize service worker, fallback to direct
-                let notificationSent = false;
+                // Send single notification - use ONLY one method to prevent duplicates
+                console.log('📤 Admin: Sending notification via single channel');
                 
-                // Try service worker first (most reliable)
-                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                    navigator.serviceWorker.controller.postMessage({
-                        type: 'TRIGGER_NOTIFICATION',
-                        ...notificationData
-                    });
-                    notificationSent = true;
-                    console.log('📤 Notification sent via Service Worker');
-                }
+                // Always use localStorage broadcast (most reliable across all pages)
+                localStorage.setItem('hitech_broadcast_notification', JSON.stringify(notificationData));
                 
-                // If no service worker, use localStorage broadcast (fallback)
-                if (!notificationSent) {
-                    localStorage.setItem('hitech_broadcast_notification', JSON.stringify(notificationData));
-                    
-                    // Trigger for current tab
+                // Small delay to prevent conflict with localStorage event
+                setTimeout(() => {
+                    // Trigger for current tab (admin page)
                     window.dispatchEvent(new CustomEvent('hitech-notification', {
                         detail: notificationData
                     }));
-                    console.log('📤 Notification sent via localStorage broadcast');
-                }
+                    console.log('📤 Notification broadcasted via localStorage and custom event');
+                }, 50);
                 
                 // Store for new users who visit later with proper timing
                 const serverNotifications = JSON.parse(localStorage.getItem('server_notifications') || '[]');

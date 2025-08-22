@@ -16,7 +16,11 @@
       "Bash(del \"C:\\Users\\zarif\\Desktop\\Coding\\Hotspot HiTech\\admin-test.html\")",
       "Bash(python:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

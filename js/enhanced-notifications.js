@@ -929,17 +929,82 @@ class EnhancedNotificationSystem {
     }
 
     /**
-     * Show enhanced notification
+     * Show enhanced notification with deduplication
      */
     showNotification(data) {
-        // Check if we have permission for browser notifications
-        if (Notification.permission === 'granted' && !document.hidden) {
-            // Show browser notification for mobile
-            this.showBrowserNotification(data);
+        // Check for duplicate notifications
+        const notificationId = data.id || `${data.notificationType}_${data.timestamp}`;
+        if (this.isNotificationAlreadyShown(notificationId)) {
+            console.log('⏭️ Skipping duplicate notification:', notificationId);
+            return;
         }
 
-        // Always show in-page notification
+        console.log('🔔 Showing notification:', notificationId, data);
+
+        // Always show in-page notification first
         this.showInPageNotification(data);
+
+        // Only show browser notification if user is on mobile or if in-page failed
+        const isMobile = this.isMobileDevice();
+        const hasPermission = Notification.permission === 'granted';
+        
+        if (hasPermission && (isMobile || document.hidden)) {
+            // Show browser notification for mobile devices or when page is hidden
+            setTimeout(() => {
+                this.showBrowserNotification(data);
+            }, 100); // Small delay to prevent conflict with in-page notification
+        }
+
+        // Mark notification as shown
+        this.markNotificationAsShown(notificationId);
+    }
+
+    /**
+     * Check if notification was already shown recently
+     */
+    isNotificationAlreadyShown(notificationId) {
+        const recentNotifications = this.getRecentNotificationIds();
+        return recentNotifications.includes(notificationId);
+    }
+
+    /**
+     * Mark notification as shown to prevent duplicates
+     */
+    markNotificationAsShown(notificationId) {
+        let recentNotifications = this.getRecentNotificationIds();
+        recentNotifications.push(notificationId);
+        
+        // Keep only last 20 notifications
+        if (recentNotifications.length > 20) {
+            recentNotifications = recentNotifications.slice(-20);
+        }
+        
+        localStorage.setItem('hitech_recent_notifications', JSON.stringify(recentNotifications));
+        
+        // Clean up old entries after 5 minutes
+        setTimeout(() => {
+            this.cleanupOldNotificationIds(notificationId);
+        }, 5 * 60 * 1000);
+    }
+
+    /**
+     * Get recently shown notification IDs
+     */
+    getRecentNotificationIds() {
+        try {
+            return JSON.parse(localStorage.getItem('hitech_recent_notifications') || '[]');
+        } catch (error) {
+            return [];
+        }
+    }
+
+    /**
+     * Clean up old notification IDs
+     */
+    cleanupOldNotificationIds(oldId) {
+        let recentNotifications = this.getRecentNotificationIds();
+        recentNotifications = recentNotifications.filter(id => id !== oldId);
+        localStorage.setItem('hitech_recent_notifications', JSON.stringify(recentNotifications));
     }
 
     /**
