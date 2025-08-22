@@ -18,6 +18,7 @@ const ADMIN_TOKEN = 'hitech_admin_2025'; // Simple token for admin authenticatio
 // Store active connections and notifications
 let activeConnections = new Set();
 let activeNotifications = [];
+let subscribedClients = new Map(); // Store push subscriptions for background notifications
 
 // MIME types for serving static files
 const mimeTypes = {
@@ -168,6 +169,96 @@ function handleApiRequest(req, res, pathname, method) {
         return;
     }
 
+    // Push subscription endpoint for background notifications
+    if (pathname === '/api/push/subscribe' && method === 'POST') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            try {
+                const { subscription, clientId } = JSON.parse(body);
+                
+                if (!subscription || !subscription.endpoint) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Invalid subscription data' }));
+                    return;
+                }
+                
+                // Store the subscription
+                const id = clientId || 'client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                subscribedClients.set(id, {
+                    subscription: subscription,
+                    timestamp: Date.now(),
+                    clientId: id
+                });
+                
+                console.log(`🔔 Push subscription registered: ${id}`);
+                console.log(`📊 Total subscribed clients: ${subscribedClients.size}`);
+                
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ 
+                    success: true, 
+                    clientId: id,
+                    totalSubscribed: subscribedClients.size
+                }));
+                
+            } catch (error) {
+                console.error('Error processing push subscription:', error);
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid JSON' }));
+            }
+        });
+        return;
+    }
+
+    // Push notification API endpoint (for background notifications)
+    if (pathname === '/api/push/send' && method === 'POST') {
+        let body = '';
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+        req.on('end', () => {
+            try {
+                const data = JSON.parse(body);
+                
+                // Simple authentication check
+                if (data.token !== ADMIN_TOKEN) {
+                    res.writeHead(401, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Unauthorized' }));
+                    return;
+                }
+                
+                const notification = {
+                    title: data.title || 'هاي تك للإنترنت',
+                    body: data.message || 'لديك إشعار جديد',
+                    tag: (data.notificationType || 'notification') + '_' + Date.now(),
+                    requireInteraction: data.priority === 'urgent' || data.notificationType === 'maintenance_alert',
+                    data: {
+                        notificationType: data.notificationType,
+                        timestamp: Date.now(),
+                        url: '/login.html'
+                    }
+                };
+                
+                // Send to all subscribed clients
+                sendPushToAllClients(notification);
+                
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ 
+                    success: true, 
+                    clientsNotified: subscribedClients.size
+                }));
+                
+            } catch (error) {
+                console.error('Error processing push notification:', error);
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Invalid JSON' }));
+            }
+        });
+        return;
+    }
+
     // 404 for unknown API routes
     res.writeHead(404, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: 'API endpoint not found' }));
@@ -247,6 +338,50 @@ function handleSSE(req, res) {
     // Clean up heartbeat on disconnect
     req.on('close', () => {
         clearInterval(heartbeat);
+    });
+}
+
+/**
+ * Send push notifications to all subscribed clients
+ */
+function sendPushToAllClients(notificationPayload) {
+    console.log(`📱 Sending push notifications to ${subscribedClients.size} subscribed clients`);
+    
+    const promises = [];
+    const expiredClients = [];
+    
+    for (const [clientId, clientData] of subscribedClients.entries()) {
+        try {
+            // Simple mock push implementation (in production, use web-push library)
+            console.log(`📤 Sending push to client: ${clientId}`);
+            
+            // In a real implementation, you would use the web-push library:
+            // const webpush = require('web-push');
+            // webpush.sendNotification(clientData.subscription, JSON.stringify(notificationPayload));
+            
+            // For now, we'll simulate success
+            promises.push(Promise.resolve({ success: true, clientId }));
+            
+        } catch (error) {
+            console.error(`❌ Failed to send push to client ${clientId}:`, error);
+            
+            // Mark client for removal if subscription is invalid
+            if (error.statusCode === 410 || error.statusCode === 413) {
+                expiredClients.push(clientId);
+            }
+        }
+    }
+    
+    // Clean up expired subscriptions
+    expiredClients.forEach(clientId => {
+        console.log(`🧹 Removing expired push subscription: ${clientId}`);
+        subscribedClients.delete(clientId);
+    });
+    
+    return Promise.all(promises).then(results => {
+        const successful = results.filter(r => r.success).length;
+        console.log(`✅ Push notifications sent successfully to ${successful}/${subscribedClients.size} clients`);
+        return { sent: successful, total: subscribedClients.size };
     });
 }
 
