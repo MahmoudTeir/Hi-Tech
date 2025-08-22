@@ -24,7 +24,10 @@
       "Bash(node server.js)",
       "Bash(curl:*)",
       "Bash(ipconfig)",
-      "Bash(netsh:*)"
+      "Bash(netsh:*)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []

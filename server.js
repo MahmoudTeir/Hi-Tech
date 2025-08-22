@@ -10,10 +10,24 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const webPush = require('web-push');
 
 // Configuration
 const PORT = process.env.PORT || 3000;
 const ADMIN_TOKEN = 'hitech_admin_2025'; // Simple token for admin authentication
+
+// VAPID keys for real push notifications
+const VAPID_KEYS = {
+    publicKey: 'BAevWbgCDCUm5qIaF2pkSN3AwxRmTMh8gPF3EeUN2PveTg4Cc0LKxw14Rm6jxiuE2qZ_AqK0lQkZy7QGYMkrQ4g',
+    privateKey: 'jt_cCa0C5aiLvEc-QIZ0PqMrvevaFRDkLNAXnuXv8Sc'
+};
+
+// Configure web-push
+webPush.setVapidDetails(
+    'mailto:admin@hitech.net',
+    VAPID_KEYS.publicKey,
+    VAPID_KEYS.privateKey
+);
 
 // Store active connections and notifications
 let activeConnections = new Set();
@@ -165,6 +179,15 @@ function handleApiRequest(req, res, pathname, method) {
             activeNotifications: activeNotifications.length,
             uptime: process.uptime(),
             timestamp: Date.now()
+        }));
+        return;
+    }
+
+    // Get VAPID public key for client-side push subscription
+    if (pathname === '/api/push/vapid-public-key' && method === 'GET') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ 
+            publicKey: VAPID_KEYS.publicKey
         }));
         return;
     }
@@ -352,15 +375,26 @@ function sendPushToAllClients(notificationPayload) {
     
     for (const [clientId, clientData] of subscribedClients.entries()) {
         try {
-            // Simple mock push implementation (in production, use web-push library)
-            console.log(`📤 Sending push to client: ${clientId}`);
+            console.log(`📤 Sending REAL push to client: ${clientId}`);
             
-            // In a real implementation, you would use the web-push library:
-            // const webpush = require('web-push');
-            // webpush.sendNotification(clientData.subscription, JSON.stringify(notificationPayload));
+            // Use real web-push library for background notifications
+            const pushPromise = webPush.sendNotification(
+                clientData.subscription,
+                JSON.stringify(notificationPayload)
+            ).then(() => {
+                console.log(`✅ Real push sent successfully to: ${clientId}`);
+                return { success: true, clientId };
+            }).catch(error => {
+                console.error(`❌ Failed to send real push to ${clientId}:`, error);
+                
+                // Mark client for removal if subscription is invalid
+                if (error.statusCode === 410 || error.statusCode === 413) {
+                    expiredClients.push(clientId);
+                }
+                return { success: false, clientId, error: error.message };
+            });
             
-            // For now, we'll simulate success
-            promises.push(Promise.resolve({ success: true, clientId }));
+            promises.push(pushPromise);
             
         } catch (error) {
             console.error(`❌ Failed to send push to client ${clientId}:`, error);

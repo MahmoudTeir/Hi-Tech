@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار الإشعارات الخلفية - هاي تك</title>
+    <title>اختبار الإشعارات الخلفية الحقيقية - هاي تك</title>
     
     <style>
         * {
@@ -113,39 +113,49 @@
             color: #22C55E;
             font-weight: bold;
         }
+
+        .highlight {
+            background: rgba(239, 68, 68, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-right: 4px solid #EF4444;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔔 اختبار الإشعارات الخلفية</h1>
+        <h1>🔔 اختبار الإشعارات الخلفية الحقيقية</h1>
+        
+        <div class="highlight">
+            <h3>🚀 تحديث مهم: الآن مع الإشعارات الخلفية الحقيقية!</h3>
+            <p>يمكن الآن إرسال إشعارات تعمل حتى عند إغلاق جميع المتصفحات نهائياً!</p>
+        </div>
         
         <div class="instruction">
-            <h3>📱 كيفية اختبار الإشعارات الخلفية:</h3>
-            <div class="step">اضغط على "تفعيل الإشعارات الخلفية"</div>
+            <h3>📱 كيفية اختبار الإشعارات الخلفية الحقيقية:</h3>
+            <div class="step">اضغط على "تفعيل الإشعارات الخلفية الحقيقية"</div>
             <div class="step">اسمح بالإشعارات عند طلب الإذن</div>
-            <div class="step">اضغط على "إرسال إشعار تجريبي"</div>
-            <div class="step">أغلق هذه الصفحة أو المتصفح</div>
-            <div class="step">اضغط مرة أخرى على "إرسال إشعار خلفي" - يجب أن يصل الإشعار حتى لو كانت الصفحة مغلقة!</div>
+            <div class="step">اضغط على "إرسال إشعار خلفي حقيقي"</div>
+            <div class="step">أغلق جميع المتصفحات نهائياً</div>
+            <div class="step">استخدم الكمبيوتر الآخر أو API لإرسال إشعار - يجب أن يصل حتى مع إغلاق جميع المتصفحات!</div>
         </div>
         
         <div class="demo-section">
-            <h3>🔧 إعداد الإشعارات الخلفية</h3>
+            <h3>🔧 إعداد الإشعارات الخلفية الحقيقية</h3>
             <button class="demo-button" id="enablePush">
-                📱 تفعيل الإشعارات الخلفية
+                📱 تفعيل الإشعارات الخلفية الحقيقية
             </button>
             <div id="pushStatus"></div>
         </div>
         
         <div class="demo-section">
             <h3>🧪 اختبار الإشعارات</h3>
-            <button class="demo-button" id="testNormal">
-                🔔 إرسال إشعار عادي
-            </button>
             <button class="demo-button" id="testBackground">
-                📤 إرسال إشعار خلفي
+                📤 إرسال إشعار خلفي حقيقي
             </button>
             <button class="demo-button" id="testUrgent">
-                🚨 إرسال إشعار عاجل
+                🚨 إرسال إشعار عاجل خلفي
             </button>
         </div>
         
@@ -153,12 +163,39 @@
             <h3>📊 معلومات النظام</h3>
             <div id="systemInfo"></div>
         </div>
+        
+        <div class="demo-section">
+            <h3>🔗 اختبار من خارج الصفحة</h3>
+            <p>لاختبار الإشعارات الخلفية الحقيقية، استخدم:</p>
+            <pre style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; overflow-x: auto;">
+curl -X POST http://10.10.10.196:3000/api/push/send \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "token": "hitech_admin_2025",
+    "notificationType": "maintenance_alert",
+    "title": "اختبار الإشعار الخلفي",
+    "message": "هذا يعمل حتى مع إغلاق جميع المتصفحات! 🚀",
+    "priority": "urgent"
+  }'
+            </pre>
+        </div>
     </div>
 
-    <script src="js/enhanced-notifications.js"></script>
     <script>
         let pushSupported = false;
         let pushSubscription = null;
+
+        // Helper function to convert VAPID key
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
 
         // Check system capabilities
         function updateSystemInfo() {
@@ -167,20 +204,21 @@
                 'Push API': 'PushManager' in window ? '✅ مدعوم' : '❌ غير مدعوم',  
                 'Notifications': 'Notification' in window ? '✅ مدعوم' : '❌ غير مدعوم',
                 'Permission': Notification.permission === 'granted' ? '✅ ممنوح' : 
-                             Notification.permission === 'denied' ? '❌ مرفوض' : '⏳ لم يُطلب بعد'
+                             Notification.permission === 'denied' ? '❌ مرفوض' : '⏳ لم يُطلب بعد',
+                'VAPID Support': 'PushManager' in window && 'getKey' in PushSubscription.prototype ? '✅ مدعوم' : '❌ غير مدعوم'
             };
             
             document.getElementById('systemInfo').innerHTML = 
                 Object.entries(info).map(([key, value]) => `<div><strong>${key}:</strong> ${value}</div>`).join('');
         }
 
-        // Enable push notifications
+        // Enable real push notifications
         async function enablePushNotifications() {
             const enableBtn = document.getElementById('enablePush');
             const statusDiv = document.getElementById('pushStatus');
             
             enableBtn.disabled = true;
-            enableBtn.textContent = '⏳ جاري التفعيل...';
+            enableBtn.textContent = '⏳ جاري التفعيل الحقيقي...';
             
             try {
                 // Request notification permission
@@ -191,19 +229,32 @@
                     }
                 }
                 
+                // Get VAPID public key from server
+                const vapidResponse = await fetch('/api/push/vapid-public-key');
+                if (!vapidResponse.ok) {
+                    throw new Error('فشل في الحصول على مفتاح VAPID');
+                }
+                const vapidData = await vapidResponse.json();
+                const vapidPublicKey = vapidData.publicKey;
+                
+                console.log('🔑 VAPID Public Key received:', vapidPublicKey);
+                statusDiv.innerHTML = '<div class="status info">🔑 تم الحصول على مفتاح VAPID...</div>';
+                
                 // Register service worker
                 if ('serviceWorker' in navigator) {
                     const registration = await navigator.serviceWorker.register('/sw.js');
                     console.log('Service Worker registered:', registration);
+                    statusDiv.innerHTML = '<div class="status info">👷 تم تسجيل Service Worker...</div>';
                     
-                    // Subscribe to push notifications
+                    // Subscribe to push notifications with VAPID key
                     if ('PushManager' in window) {
                         pushSubscription = await registration.pushManager.subscribe({
                             userVisibleOnly: true,
-                            applicationServerKey: null // In production, use VAPID keys
+                            applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
                         });
                         
-                        console.log('Push subscription:', pushSubscription);
+                        console.log('Real Push subscription:', pushSubscription);
+                        statusDiv.innerHTML = '<div class="status info">📡 تم إنشاء اشتراك الدفع الحقيقي...</div>';
                         
                         // Send subscription to server
                         const response = await fetch('/api/push/subscribe', {
@@ -213,7 +264,7 @@
                             },
                             body: JSON.stringify({
                                 subscription: pushSubscription.toJSON(),
-                                clientId: 'demo_' + Date.now()
+                                clientId: 'real_demo_' + Date.now()
                             })
                         });
                         
@@ -222,11 +273,16 @@
                         }
                         
                         const result = await response.json();
-                        console.log('Subscription registered:', result);
+                        console.log('Real subscription registered:', result);
                         
                         pushSupported = true;
-                        statusDiv.innerHTML = '<div class="status success">✅ تم تفعيل الإشعارات الخلفية بنجاح!</div>';
-                        enableBtn.textContent = '✅ مُفعل';
+                        statusDiv.innerHTML = '<div class="status success">✅ تم تفعيل الإشعارات الخلفية الحقيقية بنجاح!</div>';
+                        enableBtn.textContent = '✅ مُفعل (حقيقي)';
+                        
+                        // Show test notification immediately
+                        setTimeout(() => {
+                            statusDiv.innerHTML += '<div class="status success">🔔 جرب إغلاق جميع المتصفحات ثم أرسل إشعار!</div>';
+                        }, 1000);
                         
                     } else {
                         throw new Error('Push Manager غير مدعوم');
@@ -236,10 +292,10 @@
                 }
                 
             } catch (error) {
-                console.error('Error enabling push notifications:', error);
+                console.error('Error enabling real push notifications:', error);
                 statusDiv.innerHTML = `<div class="status error">❌ خطأ: ${error.message}</div>`;
                 enableBtn.disabled = false;
-                enableBtn.textContent = '📱 تفعيل الإشعارات الخلفية';
+                enableBtn.textContent = '📱 تفعيل الإشعارات الخلفية الحقيقية';
             }
             
             updateSystemInfo();
@@ -248,22 +304,16 @@
         // Send test notifications
         async function sendTestNotification(type) {
             const notifications = {
-                normal: {
-                    notificationType: 'service_announcement',
-                    title: 'إشعار تجريبي',
-                    message: 'هذا إشعار تجريبي عادي 📱',
-                    priority: 'normal'
-                },
                 background: {
                     notificationType: 'maintenance_alert',
-                    title: 'إشعار خلفي',
-                    message: 'يعمل هذا الإشعار حتى لو كانت الصفحة مغلقة! 🚀',
+                    title: 'إشعار خلفي حقيقي',
+                    message: 'هذا إشعار خلفي حقيقي يعمل حتى مع إغلاق جميع المتصفحات! 🚀',
                     priority: 'high'
                 },
                 urgent: {
                     notificationType: 'connection_lost',
-                    title: 'إشعار عاجل',
-                    message: 'هذا إشعار عاجل مهم جداً! ⚠️',
+                    title: 'إشعار عاجل خلفي',
+                    message: '⚠️ هذا إشعار عاجل حقيقي - أغلق المتصفح واختبره!',
                     priority: 'urgent'
                 }
             };
@@ -271,57 +321,43 @@
             const notificationData = notifications[type];
             
             try {
-                // For background notifications, use the push API
-                if (type === 'background' && pushSupported) {
-                    const response = await fetch('/api/push/send', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            token: 'hitech_admin_2025',
-                            ...notificationData
-                        })
-                    });
-                    
-                    if (response.ok) {
-                        const result = await response.json();
-                        console.log('Background push sent:', result);
-                        alert('✅ تم إرسال الإشعار الخلفي! أغلق الصفحة لاختباره.');
-                    } else {
-                        throw new Error('فشل في إرسال الإشعار الخلفي');
-                    }
+                // Send real background push notification
+                const response = await fetch('/api/push/send', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: 'hitech_admin_2025',
+                        ...notificationData
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Real background push sent:', result);
+                    alert(`✅ تم إرسال الإشعار الخلفي الحقيقي إلى ${result.clientsNotified} جهاز!\\n\\n🚀 جرب إغلاق جميع المتصفحات - الإشعار سيصل!`);
                 } else {
-                    // Use regular notification system
-                    if (window.enhancedNotifications) {
-                        window.enhancedNotifications.showNotification({
-                            ...notificationData,
-                            timestamp: Date.now(),
-                            duration: 10000
-                        });
-                    } else {
-                        // Fallback to browser notification
-                        new Notification(notificationData.title, {
-                            body: notificationData.message,
-                            icon: '/icons/icon-192x192.png'
-                        });
-                    }
+                    throw new Error('فشل في إرسال الإشعار الخلفي الحقيقي');
                 }
                 
             } catch (error) {
-                console.error('Error sending notification:', error);
+                console.error('Error sending real notification:', error);
                 alert('❌ خطأ في إرسال الإشعار: ' + error.message);
             }
         }
 
         // Event listeners
         document.getElementById('enablePush').addEventListener('click', enablePushNotifications);
-        document.getElementById('testNormal').addEventListener('click', () => sendTestNotification('normal'));
         document.getElementById('testBackground').addEventListener('click', () => sendTestNotification('background'));
         document.getElementById('testUrgent').addEventListener('click', () => sendTestNotification('urgent'));
 
         // Initialize
         updateSystemInfo();
+        
+        // Show initial instructions
+        document.getElementById('pushStatus').innerHTML = 
+            '<div class="status info">📋 اضغط على "تفعيل الإشعارات الخلفية الحقيقية" للبدء</div>';
     </script>
 </body>
 </html>
