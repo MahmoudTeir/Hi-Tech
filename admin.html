@@ -1319,9 +1319,12 @@
         // Send notification to server for real cross-device broadcasting
         async function sendToNotificationServer(notificationData) {
             const possibleUrls = [
+                'http://10.10.10.196:3000/api/notifications/send', // Network IP for mobile devices
                 'http://localhost:3000/api/notifications/send',
                 'http://127.0.0.1:3000/api/notifications/send',
-                'http://2.2.2.2:3000/api/notifications/send'
+                'http://2.2.2.2:3000/api/notifications/send',
+                'http://192.168.5.1:3000/api/notifications/send', // Hotspot IP
+                'http://192.168.137.1:3000/api/notifications/send' // Alternative hotspot IP
             ];
             
             const payload = {

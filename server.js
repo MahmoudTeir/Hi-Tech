@@ -279,15 +279,18 @@ function serveStaticFile(req, res, pathname) {
     });
 }
 
-// Start server
-server.listen(PORT, () => {
+// Start server on all network interfaces (0.0.0.0) for cross-device access
+server.listen(PORT, '0.0.0.0', () => {
     console.log('🚀 Hi-Tech Notification Server Started');
-    console.log(`🌐 Server running at http://localhost:${PORT}`);
-    console.log(`📡 SSE endpoint: http://localhost:${PORT}/notifications/stream`);
-    console.log(`🔔 Send notifications to: http://localhost:${PORT}/api/notifications/send`);
-    console.log(`📊 Server status: http://localhost:${PORT}/api/status`);
+    console.log(`🌐 Server running at http://0.0.0.0:${PORT}`);
+    console.log(`🌐 Local access: http://localhost:${PORT}`);
+    console.log(`🌐 Network access: http://[YOUR_IP]:${PORT}`);
+    console.log(`📡 SSE endpoint: /notifications/stream`);
+    console.log(`🔔 Send notifications to: /api/notifications/send`);
+    console.log(`📊 Server status: /api/status`);
     console.log(`🔐 Admin token: ${ADMIN_TOKEN}`);
     console.log('Ready to broadcast notifications to all connected devices! 📱💻🖥️');
+    console.log('📱 Mobile devices can now connect using your computer\'s IP address!');
 });
 
 // Graceful shutdown

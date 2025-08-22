@@ -1524,11 +1524,14 @@ class EnhancedNotificationSystem {
      */
     connectToNotificationServer() {
         try {
-            // Try different server URLs
+            // Try different server URLs for cross-device access
             const possibleUrls = [
+                'http://10.10.10.196:3000/notifications/stream', // Network IP for mobile devices
                 'http://localhost:3000/notifications/stream',
                 'http://127.0.0.1:3000/notifications/stream',
                 'http://2.2.2.2:3000/notifications/stream', // Local server IP
+                'http://192.168.5.1:3000/notifications/stream', // Hotspot IP
+                'http://192.168.137.1:3000/notifications/stream', // Alternative hotspot IP
                 '/notifications/stream' // Relative path if server is on same host
             ];
             

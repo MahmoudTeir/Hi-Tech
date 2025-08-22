@@ -22,7 +22,9 @@
       "Bash(git remote add:*)",
       "Bash(git push:*)",
       "Bash(node server.js)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(ipconfig)",
+      "Bash(netsh:*)"
     ],
     "deny": [],
     "ask": []

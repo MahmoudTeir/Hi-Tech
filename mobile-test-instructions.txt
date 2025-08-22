@@ -1,0 +1,34 @@
+📱 MOBILE DEVICE TESTING INSTRUCTIONS
+
+🚀 Server is now running on: http://10.10.10.196:3000
+
+📋 To test notifications on mobile devices:
+
+1. Make sure your mobile device is connected to the SAME NETWORK as your computer
+
+2. On your mobile device, open a web browser and go to:
+   http://10.10.10.196:3000/status.html
+   
+   OR
+   
+   http://10.10.10.196:3000/watch.html
+   
+   OR
+   
+   http://10.10.10.196:3000/speed-test.html
+
+3. The page should load and automatically connect to the notification server
+
+4. To send a test notification, open on your computer:
+   http://10.10.10.196:3000/admin.html
+   
+5. Login and send a notification - it should appear on ALL devices including mobiles!
+
+🔧 If mobile devices can't connect:
+- Check Windows Firewall (may need to allow port 3000)
+- Make sure both devices are on same Wi-Fi network
+- Try alternative IPs: 192.168.5.1:3000 or 192.168.137.1:3000
+
+🔒 Admin Token: hitech_admin_2025
+
+✅ Current Server Status: Running and ready for cross-device notifications!
